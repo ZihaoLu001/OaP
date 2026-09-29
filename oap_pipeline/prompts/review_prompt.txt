@@ -1,0 +1,71 @@
+This is a REVIEW of a plan you already wrote, not a request for a new plan.
+The answer format at the bottom of this message replaces "Return ONLY the JSON
+program": you must return findings, the plan, and the reasoning together.
+
+PLAN:
+__PROGRAM__
+
+YOUR REASONING:
+__REASONING__
+
+Audit your work stage by stage. For every question, write OK or PROBLEM and
+quote the relevant part.
+
+1. Can the sampler follow it?
+   Every stage needs a running term whose residual falls as the stage nears
+   completion. A yes/no term checks arrival; it cannot guide motion.
+2. Is anything too tight?
+   Is any terminal so exact that the sampler is unlikely to land on it?
+3. Does every terminal state only how the stage ends?
+   Steering-only objectives belong in running; task-required pose or alignment
+   conditions may also belong in terminal. Every terminal must
+   hold at once; each unnecessary one is another way to get stuck.
+4. Are the numbers correct and relative to the bodies?
+   Derive every distance from the supplied sizes and positions. Refer only to
+   body centres and axes, never fixed world positions, so the plan can recover
+   after motion. Two solid objects cannot occupy the same point.
+5. Is the gripper priced in every running list?
+   A command term guides the sampled jaw effort but does not certify a grasp.
+6. Does each stage begin where the previous stage ended?
+   Identify incompatible entry states or missing prerequisites.
+7. Are the tolerances split by role, and only in running?
+   Apply the shared objective design rules to running completion and guidance
+   terms. Keep intermediate terminals measurable and preserve the original
+   task's final completion requirement. Does an excessively heavy pose term
+   let the jaw drift shut?
+8. Can the robot reach each terminal without releasing or grasping anything?
+   A held object touches nothing -- except a held TOOL, which must touch its
+   target and only its target. Otherwise it cannot rest on, touch, or be flush
+   with a surface because the fingers extend below it and collide first.
+   Resting belongs to the release stage.
+9. Does every stage and term do necessary work?
+   Extras compete; remove them, but never remove a running term that guides.
+10. Which running term is heaviest in each stage?
+   Smaller normalization scales increase cost. Could a geometric term starve the jaw
+   term or pull away from another target? Does any running term oppose a
+   terminal, or does one terminal oppose another?
+11. Mentally execute every stage: what do the gripper and any held object touch
+   along the way and at the end? Fingers extend below a held object; an open jaw
+   pointing down presses on what it meets; a distance without direction is a
+   sphere, so "above" satisfies it just as "behind" does. For every possible
+   accidental touch, name the term that detects or prevents it. If none exists,
+   mark PROBLEM.
+12. Does every stage's "movable_objects" list name exactly what that stage
+   intends to move, and nothing else? The grasped or carried object counts in
+   every stage that holds it; the pushed target counts only in the pushing
+   stage. Any object left off the list is penalized if it moves, so a missing
+   intentional target will fight the plan, and an extra name silences the
+   protection.
+
+Only change the plan where you found a PROBLEM. Do not remove a running term
+that guides the sampler unless it is wrong.
+
+Return ONE JSON object with exactly these three keys, nothing else:
+
+{"findings": [{"stage": "...", "question": 1, "problem": "...", "fix": "..."}],
+ "program": {...},
+ "reasoning": {...}}
+
+"program" and "reasoning" are the complete corrected versions in the same
+format as before. If nothing is wrong, return them unchanged and leave
+"findings" empty.

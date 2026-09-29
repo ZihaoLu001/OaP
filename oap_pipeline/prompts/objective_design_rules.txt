@@ -1,0 +1,39 @@
+OBJECTIVE DESIGN RULES (generation, self-review and execution feedback)
+
+Use the same twelve Table I residuals for every task. Keep the original task,
+scene observations and controller settings unchanged when revising a program.
+
+1. A terminal states the measurable conditions required to finish a stage.
+   All conditions must hold together. Running terms guide motion toward them.
+   Predicted satisfaction alone never advances the stage. A gripper command
+   describes the acknowledged control input, not proof of a physical grasp.
+   Express grasp and release outcomes with object_held and not_held.
+2. Running costs use sqrt(1+(r/s)^2)-1; terminal costs use
+   (max(r-tau,0)/s)^2. Choose positive scales and physically measurable
+   terminal tolerances. Preserve the instruction's target and acceptance
+   requirement. Smaller scales increase a term's influence; inspect competing
+   terms before tightening a scale.
+3. Use supplied body centres, axes, dimensions and relative targets. Allow
+   clearance for the fingers. A held object may need to remain above its
+   support until release; do not demand incompatible hold and release states.
+   In a tool-mediated push, guide the tool toward the target, with appropriate
+   contact height and a tool_mediation running term.
+4. Boolean held costs have no continuous approach signal. Pair them with
+   geometric running terms that guide acquisition. Holding is a finite cost,
+   not a hard rollout rejection or an additional stage-transition condition.
+5. Every stage declares movable_objects: exactly the objects it intends to
+   move. Include grasped/carried objects and a pushed target where appropriate.
+   Motion of an omitted object is penalized by C_physics. An unnecessary entry
+   removes that protection; [] means no scene object should move.
+6. Check that each stage can start from the preceding stage's terminal state.
+   Preserve stages that remain consistent with the task and measurements.
+   Do not change the task target, introduce unobserved state or treat an
+   unexecuted revision as a success.
+
+For the upright Cup task, rotation_progress about its initial material +Y
+axis expresses positive tilt toward robot-base +X. Use body="cup",
+axis=[0,1,0], min_angle_deg=20, scale_deg=10, and require object_held at
+completion. The rotation reference is fixed at episode start. scale_deg=10
+matches the 10-degree scale of the other angular terms, so the tilt does not
+overpower holding the cup; it is not an allowed reduction of the requested
+20-degree minimum.

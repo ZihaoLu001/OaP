@@ -1,0 +1,90 @@
+{
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "max_completion_tokens": 32768,
+  "total_api_call_cap": 7,
+  "input_root": "inputs",
+  "runtime_profile": "offline_only",
+  "budget": "paper_global_250_v1",
+  "robot_calibration": {
+    "real_table_z_m": null,
+    "sim_tcp_m": null,
+    "sim_tcp_anchor": "site",
+    "table_spec_path": null
+  },
+  "runtime_environment": {
+    "OAP_JAW_CLOSE_FORCE_N": "25",
+    "OAP_DISTURB_PENALTY_W": "1.0",
+    "OAP_DECLARED_SCALE_EXACT": "1",
+    "OAP_BLUE_RUNNING_NORM": "1",
+    "OAP_EXEC_SHAPING_OVERRIDE": "typed_residual_library_v4",
+    "OAP_RUNNING_SMOOTH_EPS": "0",
+    "OAP_GRASP_BRIDGE_TELEMETRY": "a191_v1",
+    "OAP_PREFIX_HOLD_BARRIER": "soft_only",
+    "OAP_SIM_HELD_EVIDENCE": "frozen"
+  },
+  "tasks": {
+    "pick": {
+      "instruction": "Place the blackboard eraser on top of the white product box and release it.",
+      "profile": "unified_mppi_effort_uniform20_n2001_pick_s0_att20_h600_p40_v13__ablate_n1001",
+      "canonical_program": "experiments/placement/minimal_eraser_on_box_task_program_s0_attitude20_v10.json",
+      "residual_library": "paper_table1_12",
+      "context_path": "contexts/pick.json",
+      "runtime_environment": {},
+      "inputs": {
+        "bundle_path": "bundle/manifest.json",
+        "assets_path": "scene_root",
+        "calibration_xml_path": "scene_root/scene.xml",
+        "initial_obs_path": "bundle/eraser/pose/eraser_refined.json",
+        "generation_image_path": "observations/pick_rgb.png"
+      }
+    },
+    "cup": {
+      "instruction": "Grasp the cup and tilt it by at least 20 degrees toward robot-base +X while keeping it held.",
+      "profile": "unified_mppi_effort_uniform20_n2001_cup_grasp_tilt_offaxis10_h600_p40_v24__ablate_n1001",
+      "canonical_program": "experiments/task_programs/lab_cup_grasp_tilt_min20_v1.json",
+      "residual_library": "paper_table1_12",
+      "context_path": "contexts/cup.json",
+      "runtime_environment": {
+        "OAP_LAB_CUP_FIXTURE": "fixtures/lab_cup_fixture.json"
+      },
+      "inputs": {
+        "bundle_path": "bundle/manifest.json",
+        "assets_path": "scene_root",
+        "calibration_xml_path": "scene_root/scene.xml",
+        "initial_obs_path": "experiments/initial_observations/lab_cup_offline.json",
+        "generation_image_path": "observations/cup_rgb.png"
+      }
+    },
+    "push": {
+      "instruction": "Push the white box straight along robot-base +X by at least 6 cm, without grasping, lifting, or rotating it.",
+      "profile": "unified_mppi_effort_uniform20_n2001_push_6cm_one_sided_h600_p40_v20__ablate_n1001",
+      "canonical_program": "experiments/task_programs/push_box_forward_6cm_nonprehensile.json",
+      "residual_library": "paper_table1_12",
+      "context_path": "contexts/push.json",
+      "runtime_environment": {},
+      "inputs": {
+        "bundle_path": "bundle/manifest.json",
+        "assets_path": "scene_root",
+        "calibration_xml_path": "scene_root/scene.xml",
+        "initial_obs_path": "bundle/spacemouse_box/pose/spacemouse_box_refined.json",
+        "generation_image_path": "observations/push_rgb.png"
+      }
+    },
+    "toolpush": {
+      "instruction": "Use the blackboard eraser to push the white product box at least 6 cm along robot-base +X while keeping the eraser held.",
+      "profile": "unified_mppi_effort_uniform20_n2001_toolpush_6cm_rl10_h600_p40_v14__ablate_n1001",
+      "canonical_program": "experiments/task_programs/eraser_toolpush_box_positive_x_6cm_running_line10_v10.json",
+      "residual_library": "paper_table1_12",
+      "context_path": "contexts/toolpush.json",
+      "runtime_environment": {},
+      "inputs": {
+        "bundle_path": "bundle/manifest.json",
+        "assets_path": "scene_root",
+        "calibration_xml_path": "scene_root/scene.xml",
+        "initial_obs_path": "bundle/eraser/pose/eraser_refined.json",
+        "generation_image_path": "observations/toolpush_rgb.png"
+      }
+    }
+  }
+}

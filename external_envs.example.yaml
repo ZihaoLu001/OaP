@@ -1,0 +1,20 @@
+# Copy this file outside the source checkout, replace every /absolute/path
+# entry, and set OAP_EXTERNAL_ENVS to the copy.
+
+schema: oap_external_envs_v1
+default_profile: local
+
+hosts:
+  local:
+    observer:
+      python: /absolute/path/to/observer-env/bin/python
+    sam3d:
+      python: /absolute/path/to/sam3d-env/bin/python
+      root: /absolute/path/to/sam-3d-objects
+    foundationpose:
+      python: /absolute/path/to/foundationpose-env/bin/python
+      root: /absolute/path/to/Any6D/foundationpose
+      any6d_root: /absolute/path/to/Any6D
+    qwen:
+      python: /absolute/path/to/qwen-env/bin/python
+      model_id: Qwen/Qwen3-VL-4B-Instruct

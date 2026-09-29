@@ -1,0 +1,72 @@
+The robot has executed the objective program below. Revise it using the
+recorded physical measurements and the original task and scene above. The
+objective design rules apply to every revised stage just as they do to a draft.
+
+CURRENT PROGRAM:
+__PROGRAM__
+
+MEASURED EXECUTION:
+__MEASUREMENTS__
+
+Identify the last stage actually executed and the measured conditions that
+prevented progress. A visited stage is not necessarily completed. Do not assume
+that a grasp or a later stage succeeded because it appears in the program.
+Use stage_history for the sequence of visited stages, including brief stages
+between the selected snapshots. Use terminal_measurements and each stage's
+last_terminal_measurements to locate conditions that remained unsatisfied.
+Interpret measured terminal residuals against that program's own conditions;
+they describe runtime progress, not an independent evaluation verdict. State
+what is unknown when the measurements cannot establish a cause.
+Use the recorded measured and satisfied flags: a zero residual alone does not
+establish grasp or stage completion when additional physical evidence is required.
+
+When present, measured_gripper_pose gives the gripper position and two axes
+from post-execution joint-state FK in its stated coordinate frame.
+running_measurements and last_running_measurements report residuals at that
+measured state, not integrated rollout costs or the smooth running penalty.
+residual_kind="raw_table_i_residual" is the Table I error before terminal
+thresholds; older residual_kind="predicate_residual" records may already
+subtract a tolerance. Do not interchange them. Metres, radians and
+dimensionless residuals are labeled separately.
+An acknowledged_command observation describes the executed command, not the
+measured jaw aperture. An unavailable channel is unknown, not zero error.
+Older records may omit these fields. Do not fill them from selected-rollout
+predictions or assume that a small predicate residual means a small normalized
+planning cost. Use these measurements to distinguish position, orientation and
+jaw-command conflicts before proposing a new stage or completion condition.
+
+controller_reported_held is the controller's held flag, not independent grasp
+confirmation. Read it together with measured gripper_width_m, object motion and
+contact records. A true flag with a nonpositive or near-zero aperture does not
+establish a physically supported grasp. Cumulative contacts describe earlier
+execution, not necessarily present contact; recent/now fields apply to their
+recorded snapshot. A commanded open or closed jaw is an objective, not proof
+that the measured jaw obeyed it. When these channels disagree, describe the
+disagreement instead of assuming grasp succeeded or failed from the flag alone.
+
+Return the complete program to execute from the same initial scene on the next
+attempt, not a continuation from the previous final state. Keep the original
+task goal and supplied twelve-term Table I objective interface unchanged. Apply the
+shared cost, tolerance, contact-clearance and movable_objects rules to changed
+terms. Keep the rest of the current program. Localize a change to the observed
+blocker: preserve earlier stages and downstream objectives unless their own
+terms conflict with the measurements or with that necessary change. An execution
+failure alone does not establish that every stage needs redesign.
+
+Keep steering objectives in running. Do not copy pose guidance into terminal,
+tighten a completion tolerance, or add a separate approach stage just to make
+the sequence more orderly. Add a prerequisite only when the task or measured
+physical constraint requires it, and identify that evidence. All stages share
+one execution budget; adding stages does not grant more execution time. Check
+whether correcting a conflicting command or target resolves the observed issue
+without changing stage order or completion conditions. Do not invent observations,
+new objective types, or claim that an unexecuted revision succeeded. If no
+justified change follows, return the current program unchanged.
+
+Return ONE JSON object:
+{"program": {...}, "reasoning": {...}}
+The reasoning should connect each modification to a recorded observation or a
+specific conflicting objective. The program includes the whole stage sequence;
+each stage has name, running, terminal and movable_objects. Preserve these
+fields from unchanged stages. For a changed stage, list exactly the bodies it
+intends to move in movable_objects, using [] when no scene body should move.

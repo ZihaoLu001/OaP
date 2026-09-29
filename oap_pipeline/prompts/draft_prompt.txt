@@ -1,0 +1,10 @@
+Generate one complete objective program for the original task and scene using
+the objective design rules above.
+
+Return ONE JSON object with exactly two keys:
+{"program": {...}, "reasoning": {...}}
+
+The program uses the supplied objective interface and includes movable_objects
+on every stage. The reasoning is one short paragraph per stage, keyed by its
+name: what it does, which running terms guide it, why its terminal conditions
+and numbers express completion, and its most likely physical failure.

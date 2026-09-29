@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oap"
+version = "0.1.0"
+description = "Objectives as Policies: Vision-Language Model Cost Programs for Contact-Rich Manipulation"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Zihao Lu", email = "zlu31@uic.edu" }]
+requires-python = ">=3.11"
+keywords = ["robotics", "manipulation", "MPC", "vision-language-models"]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "mujoco==3.11.0",
+  "trimesh>=4.0",
+  "fast-simplification>=0.1.13",
+  "pyyaml>=6.0",
+  "pillow>=10.0",
+  "imageio[ffmpeg]>=2.31",
+  "cryptography>=42",
+  "typing-extensions>=4.8",
+]
+
+[project.optional-dependencies]
+synthesis = ["anthropic>=0.40", "openai>=1.40"]
+gpu-screen = [
+  "mujoco-mjx==3.11.0",
+  "mujoco-warp==3.11.0",
+  "warp-lang==1.15.0",
+  "jax[cuda12]==0.10.2",
+  "jax-cuda12-plugin==0.10.2",
+  "jax-cuda12-pjrt==0.10.2",
+]
+robot = [
+  "flexiv-control @ git+https://github.com/Adaptive-Robotics-Lab/flexiv_control.git@cc80d82cb9a98ee2462fd1aaad57ddfe087d7aed",
+]
+
+[project.scripts]
+oap-reconstruct = "oap.cli.reconstruct:main"
+oap-run = "oap.cli.run:main"
+oap-run-fixed-budget = "oap.cli.fixed_budget_run:main"
+oap-preflight = "oap.cli.preflight:main"
+oap-executor-preflight = "oap.cli.executor_preflight:main"
+oap-real-authorization = "oap.cli.real_authorization:main"
+oap-real-launch = "oap.cli.real_launch:main"
+oap-real-launch-seal = "oap.cli.real_launch:seal_main"
+oap-measure-readiness = "oap.cli.readiness_measurement:main"
+oap-planner-bundle = "oap.cli.remote_planner_bundle:main"
+oap-planner-serve = "oap.cli.remote_planner_serve:main"
+oap-planner-warmup-manifest = "oap.cli.remote_planner_warmup:main"
+
+[project.urls]
+Homepage = "https://github.com/ZihaoLu001/OaP"
+Repository = "https://github.com/ZihaoLu001/OaP"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+oap = ["py.typed"]
